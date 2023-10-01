@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.simplecast.protocol;
+
+// 消息类型
+enum MessageType
+{
+    RPC_TYPE_UNKNOWN = 0;			//如果发过来的数据包处理不了,发这个值回去.
+    RPC_TYPE_SET_URL = 1;	//设置视频Url
+    RPC_TYPE_PLAY = 2;
+    RPC_TYPE_PAUSE = 3;
+    RPC_TYPE_SEEK = 4;
+    RPC_TYPE_CLOSE = 5;
+}
+
+//通过网络传输的,都是这个类.
+//类里的MessageType,表示后面的request是什么类型.
+//通过类型,反序列化request成指定的类.
+message SimplecastMsg {
+    MessageType type = 1;
+    bytes request = 2;
+}
+
+enum MediaType
+{
+	TYPE_VIDEO = 0;
+	TYPE_MUSIC = 1;
+	TYPE_IMAGE = 2;
+}
+
+message msgSetUrl
+{
+	string url = 1;
+	MediaType type = 2;
+}
+
+
+//当前播放的文件,以及当前位置,当前时间.
+message msgPosition {
+    int64 pos = 1;
+}
+
